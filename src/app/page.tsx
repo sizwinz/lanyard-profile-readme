@@ -300,10 +300,9 @@ const MainSection = ({
       {userId.length > 0 && isSnowflake(userId) ? (
         <img
           src={url}
-          height={280}
-          width={500}
           alt="Your Lanyard Banner"
           className="mx-auto"
+          style={{ height: "auto", width: "100%", maxWidth: "410px" }}
         />
       ) : (
         <div className="w-full min-h-64 rounded-xl border border-white/10 bg-gray-50/5 flex items-center justify-center text-white/25 font-mono text-sm px-16 text-center">
