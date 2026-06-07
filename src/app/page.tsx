@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, JSX } from "react";
+import React, { useState, useEffect, JSX } from "react";
 import { motion } from "motion/react";
 import { isSnowflake } from "@/utils/snowflake";
 import { IParameterInfo, PARAMETER_INFO } from "@/utils/parameters";
@@ -9,10 +9,17 @@ import { InfoTooltip } from "@/components/Popover";
 import { cn, filterLetters } from "@/utils/helpers";
 
 export default function Home() {
+  const [originUrl, setOriginUrl] = useState("");
+
+  useEffect(() => {
+    setOriginUrl(window.location.origin);
+  }, []);
+
   const ORIGIN_URL =
-    process.env.NODE_ENV === "development"
+    originUrl ||
+    (process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : "https://lanyard.cnrad.dev";
+      : "https://lanyard.cnrad.dev");
 
   const [userId, setUserId] = useState("");
   const [userError, setUserError] = useState<string | JSX.Element>();
