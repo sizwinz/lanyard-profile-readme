@@ -157,7 +157,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
           xmlns="http://www.w3.org/1999/xhtml"
           style={{
             position: "absolute",
-            width: `${divWidth}px`,
+            width: "100%",
+            boxSizing: "border-box",
             height: `${divHeight}px`,
             inset: 0,
             backgroundColor: `#${backgroundColor}`,
@@ -166,14 +167,15 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
             fontSize: "16px",
             display: "flex",
             flexDirection: "column",
-            padding: "5px",
+            padding: "10px",
             borderRadius: borderRadius,
           }}
         >
           {!hideProfile ? (
             <div
               style={{
-                width: `${divWidth}px`,
+                width: "100%",
+                boxSizing: "border-box",
                 height: "100px",
                 inset: 0,
                 display: "flex",
@@ -251,7 +253,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               <div
                 style={{
                   height: "80px",
-                  width: `${numericWidth - 150}px`,
+                  flex: 1,
+                  minWidth: 0,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
@@ -464,7 +467,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                       ? "-6px"
                       : "5px",
                   lineHeight: "1",
-                  width: `${numericWidth - 131}px`,
+                  flex: 1,
+                  minWidth: 0,
                 }}
               >
                 <p
@@ -563,7 +567,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                   color: "#999",
                   marginTop: "-3px",
                   lineHeight: "1",
-                  width: `${numericWidth - 131}px`,
+                  flex: 1,
+                  minWidth: 0,
                 }}
               >
                 <p
@@ -640,7 +645,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                   color: "#999",
                   marginTop: "-3px",
                   lineHeight: "1",
-                  width: `${numericWidth - 131}px`,
+                  flex: 1,
+                  minWidth: 0,
                 }}
               >
                 <p
