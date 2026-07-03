@@ -100,7 +100,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   const showMusicActivity = !!(musicActivity && !(isAppleMusic && hideAppleMusic));
 
   const width = "410px";
-  const hasProfile = !hideProfile;
   const hasActivity = !!(activity && hideActivity !== true);
   const hasMusic = !!(
     (data.listening_to_spotify && !hideSpotify) ||
@@ -112,7 +111,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   const height = (() => {
     if (hideProfile) return "130";
     
-    let baseHeight = 100; // Profile header block height
+    const baseHeight = 100; // Profile header block height
     
     if (hasActivity && hasMusic) {
       return String(baseHeight + 120 + 120 + 10); // Both active: 350px
