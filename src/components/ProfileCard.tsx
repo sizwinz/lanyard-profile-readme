@@ -112,13 +112,13 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
     const baseHeight = 100; // Profile header block height
     
     if (hasActivity && hasMusic) {
-      return String(baseHeight + 120 + 120 + 10); // Both active: 350px
+      return String(baseHeight + 140 + 140 + 10); // Both active: 390px
     }
     if (hasActivity) {
-      return String(baseHeight + 120 + 10); // Custom activity only: 230px
+      return String(baseHeight + 150 + 10); // Custom activity only: 260px
     }
     if (hasMusic) {
-      return String(baseHeight + 120 + 10); // Music activity only: 230px
+      return String(baseHeight + 150 + 10); // Music activity only: 260px
     }
     
     // Idle state height
