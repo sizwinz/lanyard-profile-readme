@@ -523,10 +523,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               </div>
             </div>
           ) : null}
-          {data.listening_to_spotify &&
-          !hideSpotify &&
-          data.activities[Object.keys(data.activities).length - 1].type ===
-            2 ? (
+          {data.listening_to_spotify && !hideSpotify ? (
             <div
               style={{
                 display: "flex",
