@@ -101,7 +101,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
 
   const width = customWidth ?? "410px";
   const numericWidth = Number(String(width).replace("px", "")) || 410;
-  const divWidth = String(numericWidth - 10);
   const hasActivity = !!(activity && hideActivity !== true);
   const hasMusic = !!(
     (data.listening_to_spotify && !hideSpotify) ||
