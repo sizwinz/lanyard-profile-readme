@@ -11,8 +11,7 @@ interface ProfileCardProps {
     avatar: string | null;
     avatarDecoration: string | null;
     clanBadge: string | null;
-    assetLargeImage: string | null;
-    assetSmallImage: string | null;
+    activityImages: { largeImage: string | null; smallImage: string | null; }[];
     userEmoji: string | null;
     albumCover: string | null;
   };
@@ -47,8 +46,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
     avatar,
     avatarDecoration,
     clanBadge,
-    assetLargeImage,
-    assetSmallImage,
+    activityImages,
     userEmoji,
     albumCover,
   } = images;
@@ -413,7 +411,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               >
                 {activity.assets?.large_image ? (
                   <img
-                    src={`data:image/png;base64,${assetLargeImage}`}
+                    src={`data:image/png;base64,${activityImages[0]?.largeImage}`}
                     alt="Activity Large Image"
                     style={{
                       width: "80px",
@@ -438,7 +436,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
 
                 {activity.assets?.small_image ? (
                   <img
-                    src={`data:image/png;base64,${assetSmallImage}`}
+                    src={`data:image/png;base64,${activityImages[0]?.smallImage}`}
                     alt="Activity Small Image"
                     style={{
                       width: "30px",
