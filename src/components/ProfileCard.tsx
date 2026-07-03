@@ -40,6 +40,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
     clanBackgroundColor,
     borderRadius = "10px",
     idleMessage = "I'm not currently doing anything!",
+    width: customWidth,
+    height: customHeight,
   } = settings;
 
   const {
@@ -97,7 +99,9 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   // Allow simultaneous display with active custom activity
   const showMusicActivity = !!(musicActivity && !(isAppleMusic && hideAppleMusic));
 
-  const width = "410px";
+  const width = customWidth ?? "410px";
+  const numericWidth = Number(String(width).replace("px", "")) || 410;
+  const divWidth = String(numericWidth - 10);
   const hasActivity = !!(activity && hideActivity !== true);
   const hasMusic = !!(
     (data.listening_to_spotify && !hideSpotify) ||
@@ -106,7 +110,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   const hasAnyListening = data.listening_to_spotify || showMusicActivity;
 
   // Calculate dynamic SVG height depending on active sections
-  const height = (() => {
+  const calculatedHeight = (() => {
     if (hideProfile) return "130";
     
     const baseHeight = 100; // Profile header block height
@@ -128,8 +132,11 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
     return String(baseHeight + 150 + 10); // Profile + Idle Message: 260px
   })();
 
+  const height = customHeight ?? calculatedHeight;
+  const numericHeight = Number(String(height).replace("px", "")) || 390;
+
   // Calculate matching dynamic foreignObject inner div height
-  const divHeight = String(Number(height) - 10);
+  const divHeight = String(numericHeight - 10);
 
   const ForeignDiv = (
     props: DetailedHTMLProps<
@@ -141,16 +148,16 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
-      viewBox={`0 0 ${width} ${height}`}
+      width={numericWidth}
+      height={numericHeight}
+      viewBox={`0 0 ${numericWidth} ${numericHeight}`}
     >
-      <foreignObject x="0" y="0" width="410" height={height}>
+      <foreignObject x="0" y="0" width={numericWidth} height={numericHeight}>
         <ForeignDiv
           xmlns="http://www.w3.org/1999/xhtml"
           style={{
             position: "absolute",
-            width: "400px",
+            width: `${divWidth}px`,
             height: `${divHeight}px`,
             inset: 0,
             backgroundColor: `#${backgroundColor}`,
@@ -166,7 +173,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
           {!hideProfile ? (
             <div
               style={{
-                width: "400px",
+                width: `${divWidth}px`,
                 height: "100px",
                 inset: 0,
                 display: "flex",
@@ -244,7 +251,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               <div
                 style={{
                   height: "80px",
-                  width: "260px",
+                  width: `${numericWidth - 150}px`,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
@@ -457,7 +464,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                       ? "-6px"
                       : "5px",
                   lineHeight: "1",
-                  width: "279px",
+                  width: `${numericWidth - 131}px`,
                 }}
               >
                 <p
@@ -556,7 +563,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                   color: "#999",
                   marginTop: "-3px",
                   lineHeight: "1",
-                  width: "279px",
+                  width: `${numericWidth - 131}px`,
                 }}
               >
                 <p
@@ -633,7 +640,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                   color: "#999",
                   marginTop: "-3px",
                   lineHeight: "1",
-                  width: "279px",
+                  width: `${numericWidth - 131}px`,
                 }}
               >
                 <p
