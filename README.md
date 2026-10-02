@@ -1,6 +1,6 @@
 > ❗ IMPORTANT ❗
 > 
-> If you are using `lanyard-profile-readme.vercel.app`, change it to `lanyard.cnrad.dev` at your earliest convenience!
+> The hosted API is available at `discord-rp-for-github.vercel.app`.
 
 <!-- markdownlint-disable -->
 # lanyard-profile-readme
@@ -18,16 +18,16 @@ In a `README.md` file, include the following, replacing `:id` with your Discord 
 ```md
 <a href="https://discord.com/users/:id">
 	<picture>
-		<source media="(prefers-color-scheme: dark)" srcset="https://lanyard.cnrad.dev/api/:id?theme=dark">
-		<source media="(prefers-color-scheme: light)" srcset="https://lanyard.cnrad.dev/api/:id?theme=light">
-		<img src="https://lanyard.cnrad.dev/api/:id?theme=light" alt="Discord Presence">
+		<source media="(prefers-color-scheme: dark)" srcset="https://discord-rp-for-github.vercel.app/api/:id?theme=dark">
+		<source media="(prefers-color-scheme: light)" srcset="https://discord-rp-for-github.vercel.app/api/:id?theme=light">
+		<img src="https://discord-rp-for-github.vercel.app/api/:id?theme=light" alt="Discord Presence">
 	</picture>
 </a>
 ```
 
 It should display something similar to the following (I am using my Discord user ID as an example):
 
-[![Discord Presence](https://lanyard.cnrad.dev/api/705665813994012695)](https://discord.com/users/705665813994012695)
+[![Discord Presence](https://discord-rp-for-github.vercel.app/api/705665813994012695)](https://discord.com/users/705665813994012695)
 
 When others click it, they will be directed to your actual Discord profile. Neat!
 
@@ -102,7 +102,7 @@ If you don't want to display a specific application, append the query param `ign
 ## ___Example URL and result___
 
 ```
-[![Discord Presence](https://lanyard.cnrad.dev/api/94490510688792576?theme=light&bg=809ecf&animated=false&hideDiscrim=true&borderRadius=30px&idleMessage=Probably%20doing%20something%20else...)](https://discord.com/users/94490510688792576)
+[![Discord Presence](https://discord-rp-for-github.vercel.app/api/94490510688792576?theme=light&bg=809ecf&animated=false&hideDiscrim=true&borderRadius=30px&idleMessage=Probably%20doing%20something%20else...)](https://discord.com/users/94490510688792576)
 ```
 
 [![Discord Presence](https://lanyard.cnrad.dev/api/94490510688792576?theme=light&bg=809ecf&animated=false&hideDiscrim=true&borderRadius=30px&idleMessage=Probably%20doing%20something%20else...)](https://discord.com/users/94490510688792576)
