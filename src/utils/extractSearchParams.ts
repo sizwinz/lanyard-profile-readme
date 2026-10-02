@@ -45,7 +45,7 @@ export function extractSearchParams(
   const animatedDecoration = parseBool(params.animatedDecoration);
 
   const clanBackgroundColor: string =
-    params.theme === "light" ? "#e0dede" : "#111214";
+    params.theme === "light" ? "#f6f8fa" : "#161b22";
 
   return {
     hideStatus,

@@ -52,17 +52,17 @@ export default function Home() {
           <MainSection url={url} userId={userId} className="max-lg:hidden" />
 
           <div className="w-full sm:max-w-[30rem]">
-            <p className="text-left text-3xl font-semibold text-[#cecece] mb-2">
+            <p className="mb-2 text-left text-3xl font-semibold text-[var(--foreground)]">
               🏷️ lanyard-profile-readme{" "}
             </p>
 
-            <p className="mb-2 text-sm text-[#aaabaf]">
+            <p className="mb-2 text-sm text-[var(--muted)]">
               Uses{" "}
               <a
                 href="https://github.com/Phineas/lanyard"
                 target="_blank"
                 rel="noreferrer noopener"
-                className="text-white underline decoration-transparent underline-offset-2 transition-colors duration-150 ease-out hover:decoration-white"
+                className="text-[var(--accent)] underline decoration-transparent underline-offset-2 transition-colors duration-150 ease-out hover:decoration-current"
               >
                 Lanyard
               </a>{" "}
@@ -71,7 +71,7 @@ export default function Home() {
 
             <div className="flex h-[2.25rem] w-full flex-row gap-2">
               <input
-                className="w-full rounded-lg border border-white/10 bg-transparent px-2.5 py-1.5 font-mono text-sm text-gray-200 transition-colors duration-150 ease-out focus:border-white/50 focus:outline-none"
+                className="w-full rounded-lg border border-[var(--border)] bg-[var(--control-bg)] px-2.5 py-1.5 font-mono text-sm text-[var(--foreground)] transition-colors duration-150 ease-out placeholder:text-[var(--muted)] focus:border-[var(--accent)] focus:outline-none"
                 onChange={(e) => onLoadDiscordId(e.target.value)}
                 value={userId || ""}
                 placeholder="Enter your Discord ID"
@@ -101,7 +101,7 @@ export default function Home() {
 
             <div
               className={cn(
-                "flex flex-col text-white mt-4 p-3 border border-zinc-800 bg-zinc-900/50 rounded-lg mb-4"
+                "mb-4 mt-4 flex flex-col rounded-lg border border-[var(--border)] bg-[var(--canvas-subtle)] p-3 text-[var(--foreground)]"
               )}
             >
               <div className="grid-rows-auto mb-4 flex w-full flex-col gap-2.5 sm:grid sm:grid-cols-2">
@@ -113,7 +113,7 @@ export default function Home() {
                         className="flex flex-col gap-1.5"
                       >
                         <div className="flex items-center gap-2">
-                          <p className="text-sm text-gray-300">{item.title}</p>
+                          <p className="text-sm text-[var(--foreground)]">{item.title}</p>
                           <InfoTooltip
                             content={item.description || "Unknown"}
                           />
@@ -121,7 +121,7 @@ export default function Home() {
 
                         {item.type === "string" && (
                           <input
-                            className="relative h-8 w-full appearance-none rounded-md border border-white/10 bg-transparent px-2 py-0.5 text-sm outline-none transition-all duration-150 ease-out placeholder:text-white/30 focus:border-white/50 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="relative h-8 w-full appearance-none rounded-md border border-[var(--border)] bg-[var(--control-bg)] px-2 py-0.5 text-sm text-[var(--foreground)] outline-none transition-all duration-150 ease-out placeholder:text-[var(--muted)] focus:border-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-50"
                             placeholder={item.options?.placeholder || "..."}
                             onChange={(e) => {
                               if (e.target.value.length < 1) {
@@ -169,22 +169,22 @@ export default function Home() {
                                 }));
                               }}
                               className={cn(
-                                "relative h-8 w-full appearance-none rounded-md border border-white/10 bg-transparent px-2 py-0.5 text-sm outline-none transition-all duration-150 ease-out placeholder:text-white/30 focus:border-white/50 disabled:cursor-not-allowed disabled:opacity-50",
+                                "relative h-8 w-full appearance-none rounded-md border border-[var(--border)] bg-[var(--control-bg)] px-2 py-0.5 text-sm text-[var(--foreground)] outline-none transition-all duration-150 ease-out placeholder:text-[var(--muted)] focus:border-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-50",
                                 {
-                                  "text-white/30":
+                                  "text-[var(--muted)]":
                                     !options[item.parameter] ||
                                     options[item.parameter] === "",
                                 }
                               )}
                             >
-                              <option value="" className="bg-background">
+                              <option value="" className="bg-[var(--control-bg)]">
                                 None
                               </option>
                               {item.options.list.map((option) => (
                                 <option
                                   value={option.value}
                                   key={option.value}
-                                  className="bg-background"
+                                  className="bg-[var(--control-bg)]"
                                 >
                                   {option.name}
                                 </option>
@@ -192,7 +192,7 @@ export default function Home() {
                             </select>
                             <Icon.ChevronDown
                               size={14}
-                              className="absolute right-2 top-0 my-auto flex h-full text-white/50"
+                              className="absolute right-2 top-0 my-auto flex h-full text-[var(--muted)]"
                             />
                           </div>
                         )}
@@ -217,11 +217,11 @@ export default function Home() {
                       <input
                         type="checkbox"
                         className={cn(
-                          "mt-0.5 max-h-4 min-h-4 min-w-4 max-w-4 cursor-pointer appearance-none before:overflow-clip before:rounded-[0.25rem] after:absolute after:h-4 after:w-4 after:rounded-[0.25rem] after:border after:border-white/10 after:transition-all after:duration-150 after:ease-out",
+                          "mt-0.5 max-h-4 min-h-4 min-w-4 max-w-4 cursor-pointer appearance-none before:overflow-clip before:rounded-[0.25rem] after:absolute after:h-4 after:w-4 after:rounded-[0.25rem] after:border after:border-[var(--border)] after:transition-all after:duration-150 after:ease-out",
                           {
-                            "after:border-gray-200/50 after:bg-gray-500/40":
+                            "after:border-[var(--accent)] after:bg-[var(--accent-muted)]":
                               options[item.parameter] === !item.invertBoolean,
-                            "after:bg-zinc-700/10 after:hover:bg-zinc-700/25":
+                            "after:bg-[var(--control-bg)] after:hover:bg-[var(--canvas-subtle)]":
                               options[item.parameter] !== !item.invertBoolean,
                           }
                         )}
@@ -242,7 +242,7 @@ export default function Home() {
                       />
 
                       <p
-                        className="text-gray-300"
+                        className="text-[var(--foreground)]"
                         style={{
                           textDecoration: PARAMETER_INFO.find(
                             (p) => p.parameter === item.parameter
@@ -264,7 +264,7 @@ export default function Home() {
                 href="https://github.com/cnrad/lanyard-profile-readme?tab=readme-ov-file#options"
                 rel="noreferrer noopener"
                 target="_blank"
-                className="flex flex-row items-center justify-center gap-2 mt-4 text-sm text-white/75 hover:text-white w-full bg-white/5 hover:bg-white/10 border border-white/10 rounded-full py-1.5 transition-colors duration-150 ease-out"
+                className="mt-4 flex w-full flex-row items-center justify-center gap-2 rounded-full border border-[var(--border)] bg-[var(--control-bg)] py-1.5 text-sm text-[var(--muted)] transition-colors duration-150 ease-out hover:border-[var(--accent)] hover:text-[var(--accent)]"
               >
                 More info
                 <Icon.ExternalLink size={14} />
@@ -312,7 +312,7 @@ const MainSection = ({
           style={{ height: "auto", width: "100%", maxWidth: "410px" }}
         />
       ) : (
-        <div className="w-full min-h-64 rounded-xl border border-white/10 bg-gray-50/5 flex items-center justify-center text-white/25 font-mono text-sm px-16 text-center">
+        <div className="flex min-h-64 w-full items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--canvas-subtle)] px-16 text-center font-mono text-sm text-[var(--muted)]">
           Enter your Discord ID to preview your Lanyard Banner
         </div>
       )}
@@ -322,11 +322,11 @@ const MainSection = ({
           <button
             key={type}
             className={cn(
-              "rounded-md border border-zinc-800 px-1.5 py-1 font-mono text-sm font-medium uppercase tracking-wide text-white/50 transition-colors duration-100 ease-out cursor-pointer",
+              "cursor-pointer rounded-md border border-[var(--border)] px-1.5 py-1 font-mono text-sm font-medium uppercase tracking-wide text-[var(--muted)] transition-colors duration-100 ease-out",
               {
-                "border-white/30 bg-zinc-900 font-semibold text-white/75":
+                "border-[var(--accent)] bg-[var(--accent-muted)] font-semibold text-[var(--accent)]":
                   outputType === type,
-                "hover:border-white/15 hover:bg-zinc-700/25":
+                "hover:border-[var(--accent)] hover:bg-[var(--canvas-subtle)]":
                   outputType !== type,
               }
             )}
@@ -337,12 +337,12 @@ const MainSection = ({
         ))}
       </div>
 
-      <div className="break-all rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 font-mono text-sm text-blue-400 my-2">
+      <div className="my-2 break-all rounded-lg border border-[var(--border)] bg-[var(--canvas-subtle)] px-3 py-2 font-mono text-sm text-[var(--accent)]">
         {copyContent[outputType]}
       </div>
 
       <button
-        className="w-full rounded-md bg-zinc-900 border border-zinc-800 px-3 py-1 font-mono text-sm font-medium text-white/50 transition-colors duration-75 ease-out hover:bg-zinc-800/75 hover:text-white cursor-pointer"
+        className="w-full cursor-pointer rounded-md border border-[var(--border)] bg-[var(--canvas-subtle)] px-3 py-1 font-mono text-sm font-medium text-[var(--muted)] transition-colors duration-75 ease-out hover:border-[var(--accent)] hover:bg-[var(--accent-muted)] hover:text-[var(--accent)]"
         onClick={() => {
           navigator.clipboard.writeText(copyContent[outputType]);
           setCopyState("Copied!");
