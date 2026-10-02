@@ -53,7 +53,10 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
 
   let avatarBorderColor: string = "#747F8D";
   const backgroundColor: string =
-    bg ?? (theme === "light" ? "ededed" : "1a1c1f");
+    bg ?? (theme === "light" ? "ffffff" : "0d1117");
+  const foregroundColor = theme === "light" ? "#1f2328" : "#e6edf3";
+  const mutedColor = theme === "light" ? "#656d76" : "#8b949e";
+  const borderColor = theme === "light" ? "#d0d7de" : "#30363d";
 
   switch (data.discord_status) {
     case "online":
@@ -156,7 +159,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
             height: `${divHeight}px`,
             inset: 0,
             backgroundColor: `#${backgroundColor}`,
-            color: theme === "dark" ? "#fff" : "#000",
+            color: foregroundColor,
             fontFamily: `'Century Gothic', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif`,
             fontSize: "16px",
             display: "flex",
@@ -176,11 +179,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 paddingBottom: "5px",
                 borderBottom: !showActivitySection
                     ? "none"
-                    : `solid 0.5px ${
-                        theme === "dark"
-                          ? "hsl(0, 0%, 100%, 10%)"
-                          : "hsl(0, 0%, 0%, 10%)"
-                      }`,
+                    : `solid 0.5px ${borderColor}`,
               }}
             >
               <div
@@ -269,7 +268,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                     {!hideDiscrim && !showDisplayName ? (
                       <span
                         style={{
-                          color: theme === "dark" ? "#ccc" : "#666",
+                          color: mutedColor,
                           fontWeight: "lighter",
                         }}
                       >
