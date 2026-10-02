@@ -16,7 +16,13 @@ First, join the Lanyard [Discord](https://discord.com/invite/WScAm7vNGF) (if you
 In a `README.md` file, include the following, replacing `:id` with your Discord user ID:
 
 ```md
-[![Discord Presence](https://lanyard.cnrad.dev/api/:id)](https://discord.com/users/:id)
+<a href="https://discord.com/users/:id">
+	<picture>
+		<source media="(prefers-color-scheme: dark)" srcset="https://lanyard.cnrad.dev/api/:id?theme=dark">
+		<source media="(prefers-color-scheme: light)" srcset="https://lanyard.cnrad.dev/api/:id?theme=light">
+		<img src="https://lanyard.cnrad.dev/api/:id?theme=light" alt="Discord Presence">
+	</picture>
+</a>
 ```
 
 It should display something similar to the following (I am using my Discord user ID as an example):
@@ -24,6 +30,8 @@ It should display something similar to the following (I am using my Discord user
 [![Discord Presence](https://lanyard.cnrad.dev/api/705665813994012695)](https://discord.com/users/705665813994012695)
 
 When others click it, they will be directed to your actual Discord profile. Neat!
+
+The `<picture>` version follows GitHub's light or dark theme automatically. Use a single image URL with `theme=light` or `theme=dark` when a fixed appearance is preferred.
 
 ## Options
 

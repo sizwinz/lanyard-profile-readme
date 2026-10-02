@@ -292,8 +292,28 @@ const MainSection = ({
   );
 
   const copyContent = {
-    markdown: `[![Discord Presence](${url})](https://discord.com/users/${userId})`,
-    html: `<a href="https://discord.com/users/${userId}"><img src="${url}" /></a>`,
+    markdown: (() => {
+      const lightUrl = new URL(url);
+      const darkUrl = new URL(url);
+      lightUrl.searchParams.set("theme", "light");
+      darkUrl.searchParams.set("theme", "dark");
+
+      return `<a href="https://discord.com/users/${userId}">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="${darkUrl.href}">
+    <source media="(prefers-color-scheme: light)" srcset="${lightUrl.href}">
+    <img src="${lightUrl.href}" alt="Discord Presence">
+  </picture>
+</a>`;
+    })(),
+    html: (() => {
+      const lightUrl = new URL(url);
+      const darkUrl = new URL(url);
+      lightUrl.searchParams.set("theme", "light");
+      darkUrl.searchParams.set("theme", "dark");
+
+      return `<a href="https://discord.com/users/${userId}"><picture><source media="(prefers-color-scheme: dark)" srcset="${darkUrl.href}"><source media="(prefers-color-scheme: light)" srcset="${lightUrl.href}"><img src="${lightUrl.href}" alt="Discord Presence"></picture></a>`;
+    })(),
     url: `${url}`,
   };
 
