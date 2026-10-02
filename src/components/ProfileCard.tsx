@@ -1,6 +1,6 @@
 import { Activity, Data } from "@/utils/LanyardTypes";
 import { Badges, UnknownIconDark, UnknownIconLight } from "@/utils/badges";
-import { elapsedTime, getFlags, getImageDataUri } from "@/utils/helpers";
+import { elapsedTime, getFlags } from "@/utils/helpers";
 import { ProfileSettings } from "@/utils/parameters";
 import React, { DetailedHTMLProps, HTMLAttributes } from "react";
 
@@ -11,7 +11,7 @@ interface ProfileCardProps {
     avatar: string | null;
     avatarDecoration: string | null;
     clanBadge: string | null;
-    activityImages: Array<{ largeImage: string | null; smallImage: string | null }>;
+    activityImages: { largeImage: string | null; smallImage: string | null; }[];
     userEmoji: string | null;
     albumCover: string | null;
   };
@@ -40,6 +40,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
     clanBackgroundColor,
     borderRadius = "10px",
     idleMessage = "I'm not currently doing anything!",
+    width: customWidth,
+    height: customHeight,
   } = settings;
 
   const {
@@ -88,53 +90,55 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
     .filter(
       (activity) => !ignoreAppId?.includes(activity.application_id ?? "")
     );
+  const activity: Activity | undefined =
+    activities.length > 0 ? activities[0] : undefined;
+
   // Non-Spotify listening activity (e.g. Apple Music via discord-music-presence)
   const musicActivity: Activity | undefined = !data.listening_to_spotify
     ? data.activities.find((a) => a.type === 2)
     : undefined;
   const isAppleMusic = musicActivity?.name === "Apple Music";
+  
+  // Allow simultaneous display with active custom activity
   const showMusicActivity = !!(musicActivity && !(isAppleMusic && hideAppleMusic));
 
-  const width = "410px";
+  const width = customWidth ?? "410px";
+  const numericWidth = Number(String(width).replace("px", "")) || 410;
+  const hasActivity = !!(activity && hideActivity !== true);
+  const hasMusic = !!(
+    (data.listening_to_spotify && !hideSpotify) ||
+    showMusicActivity
+  );
   const hasAnyListening = data.listening_to_spotify || showMusicActivity;
 
-  const showActivitySection = hideActivity !== true &&
-    !(hideActivity === "whenNotUsed" && activities.length === 0 && !hasAnyListening);
-
-  const ACTIVITY_BLOCK_H = 110;
-
-  // Calculate activity section height based on visible content
-  const activitySectionH = (() => {
-    if (!showActivitySection) return 0;
-
-    let height = 0;
-    if (activities.length > 0) {
-      height += activities.length * ACTIVITY_BLOCK_H;
+  // Calculate dynamic SVG height depending on active sections
+  const calculatedHeight = (() => {
+    if (hideProfile) return "130";
+    
+    const baseHeight = 100; // Profile header block height
+    
+    if (hasActivity && hasMusic) {
+      return String(baseHeight + 150 + 150 + 10); // Both active: 410px
     }
-
-    const hasSpotify = data.listening_to_spotify && !hideSpotify;
-    if (hasSpotify) {
-      height += ACTIVITY_BLOCK_H;
-    } else if (showMusicActivity) {
-      height += ACTIVITY_BLOCK_H;
+    if (hasActivity) {
+      return String(baseHeight + 160 + 10); // Custom activity only: 270px
     }
-
-    if (activities.length === 0 && !hasSpotify && !showMusicActivity) {
-      height = ACTIVITY_BLOCK_H; // idle message
+    if (hasMusic) {
+      return String(baseHeight + 160 + 10); // Music activity only: 270px
     }
-
-    return height;
+    
+    // Idle state height
+    if (hideActivity === true || hideActivity === "whenNotUsed") {
+      return "91";
+    }
+    return String(baseHeight + 150 + 10); // Profile + Idle Message: 260px
   })();
 
-  const height = (() => {
-    if (hideProfile && activitySectionH === 0) return "40";
-    if (hideProfile) return String(activitySectionH + 20);
-    if (activitySectionH === 0) return "91";
-    return String(100 + activitySectionH);
-  })();
+  const height = customHeight ?? calculatedHeight;
+  const numericHeight = Number(String(height).replace("px", "")) || 390;
 
-  // Calculate height of main div element
-  const divHeight = String(Number(height) - 10);
+  // Calculate matching dynamic foreignObject inner div height
+  const divHeight = String(numericHeight - 10);
 
   const ForeignDiv = (
     props: DetailedHTMLProps<
@@ -146,16 +150,17 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
-      viewBox={`0 0 ${width} ${height}`}
+      width={numericWidth}
+      height={numericHeight}
+      viewBox={`0 0 ${numericWidth} ${numericHeight}`}
     >
-      <foreignObject x="0" y="0" width="410" height={height}>
+      <foreignObject x="0" y="0" width={numericWidth} height={numericHeight}>
         <ForeignDiv
           xmlns="http://www.w3.org/1999/xhtml"
           style={{
             position: "absolute",
-            width: "400px",
+            width: "100%",
+            boxSizing: "border-box",
             height: `${divHeight}px`,
             inset: 0,
             backgroundColor: `#${backgroundColor}`,
@@ -164,20 +169,25 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
             fontSize: "16px",
             display: "flex",
             flexDirection: "column",
-            padding: "5px",
+            padding: "10px",
             borderRadius: borderRadius,
           }}
         >
           {!hideProfile ? (
             <div
               style={{
-                width: "400px",
+                width: "100%",
+                boxSizing: "border-box",
                 height: "100px",
                 inset: 0,
                 display: "flex",
                 flexDirection: "row",
                 paddingBottom: "5px",
-                borderBottom: !showActivitySection
+                borderBottom:
+                  hideActivity === true ||
+                  (hideActivity === "whenNotUsed" &&
+                    !activity &&
+                    !hasAnyListening)
                     ? "none"
                     : `solid 0.5px ${borderColor}`,
               }}
@@ -192,7 +202,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 }}
               >
                 <img
-                  src={getImageDataUri(avatar)}
+                  src={`data:image/png;base64,${avatar}`}
                   alt="User Avatar"
                   style={{
                     borderRadius: "50%",
@@ -209,7 +219,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 !data.discord_user.avatar_decoration_data ? null : (
                   <>
                     <img
-                      src={getImageDataUri(avatarDecoration!)}
+                      src={`data:image/webp;base64,${avatarDecoration!}`}
                       alt="Avatar Decoration"
                       style={{
                         display: "block",
@@ -241,7 +251,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               <div
                 style={{
                   height: "80px",
-                  width: "260px",
+                  flex: 1,
+                  minWidth: 0,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
@@ -298,7 +309,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                       }}
                     >
                       <img
-                        src={getImageDataUri(clanBadge!)}
+                        src={`data:image/png;base64,${clanBadge!}`}
                         alt="Clan Badge"
                         style={{
                           width: "16px",
@@ -319,7 +330,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                         <img
                           key={v}
                           alt={v}
-                          src={getImageDataUri(Badges[v])}
+                          src={`data:image/png;base64,${Badges[v]}`}
                           style={{
                             width: "auto",
                             height: "20px",
@@ -358,7 +369,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                   >
                     {userStatus.emoji?.id ? (
                       <img
-                        src={getImageDataUri(userEmoji)}
+                        src={`data:image/png;base64,${userEmoji}`}
                         alt="User Status Emoji"
                         style={{
                           width: "15px",
@@ -388,14 +399,12 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
             </div>
           ) : null}
 
-          {activities.length > 0 && showActivitySection
-            ? activities.map((activity, index) => (
+          {activity ? (
             <div
-              key={activity.application_id || index}
               style={{
                 display: "flex",
                 flexDirection: "row",
-                height: `${ACTIVITY_BLOCK_H}px`,
+                height: "120px",
                 marginLeft: "15px",
                 fontSize: "0.75rem",
                 paddingTop: "18px",
@@ -408,9 +417,9 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                   height: "auto",
                 }}
               >
-                {activityImages[index]?.largeImage ? (
+                {activity.assets?.large_image ? (
                   <img
-                    src={getImageDataUri(activityImages[index]?.largeImage)}
+                    src={`data:image/png;base64,${activityImages[0]?.largeImage}`}
                     alt="Activity Large Image"
                     style={{
                       width: "80px",
@@ -421,9 +430,9 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                   />
                 ) : (
                   <img
-                    src={getImageDataUri(
+                    src={`data:image/png;base64,${
                       theme === "dark" ? UnknownIconLight : UnknownIconDark
-                    )}
+                    }`}
                     alt="Unknown Icon"
                     style={{
                       width: "70px",
@@ -435,7 +444,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
 
                 {activity.assets?.small_image ? (
                   <img
-                    src={getImageDataUri(activityImages[index]?.smallImage)}
+                    src={`data:image/png;base64,${activityImages[0]?.smallImage}`}
                     alt="Activity Small Image"
                     style={{
                       width: "30px",
@@ -456,7 +465,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                       ? "-6px"
                       : "5px",
                   lineHeight: "1",
-                  width: "279px",
+                  flex: 1,
+                  minWidth: 0,
                 }}
               >
                 <p
@@ -501,9 +511,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                     }}
                   >
                     {activity.state}
-                    {/* {activity.party?.size
-                      ? ` (${activity.party.size[0]} of ${activity.party.size[1]})`
-                      : null} */}
                   </p>
                 ) : null}
                 {activity.timestamps?.start && !hideTimestamp ? (
@@ -524,9 +531,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                 ) : null}
               </div>
             </div>
-          ))
-          : null}
-          {data.listening_to_spotify && showActivitySection && !hideSpotify ? (
+          ) : null}
+          {data.listening_to_spotify && !hideSpotify ? (
             <div
               style={{
                 display: "flex",
@@ -538,14 +544,14 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               }}
             >
               <img
-                src={getImageDataUri(
+                src={`data:image/png;base64,${
                   albumCover ??
                   (theme === "dark" ? UnknownIconLight : UnknownIconDark)
-                )}
+                }`}
                 alt="Album Cover"
                 style={{
                   border: data.spotify.album_art_url
-                    ? "border: solid 0.5px #222"
+                    ? "solid 0.5px #222"
                     : undefined,
                   width: "80px",
                   height: "80px",
@@ -559,7 +565,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                   color: "#999",
                   marginTop: "-3px",
                   lineHeight: "1",
-                  width: "279px",
+                  flex: 1,
+                  minWidth: 0,
                 }}
               >
                 <p
@@ -603,7 +610,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               </div>
             </div>
           ) : null}
-          {showMusicActivity && showActivitySection ? (
+          {showMusicActivity ? (
             <div
               style={{
                 display: "flex",
@@ -615,10 +622,10 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               }}
             >
               <img
-                src={getImageDataUri(
+                src={`data:image/png;base64,${
                   albumCover ??
                   (theme === "dark" ? UnknownIconLight : UnknownIconDark)
-                )}
+                }`}
                 alt="Album Cover"
                 style={{
                   border: musicActivity!.assets?.large_image
@@ -636,7 +643,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
                   color: "#999",
                   marginTop: "-3px",
                   lineHeight: "1",
-                  width: "279px",
+                  flex: 1,
+                  minWidth: 0,
                 }}
               >
                 <p
@@ -682,10 +690,10 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
               </div>
             </div>
           ) : null}
-          {showActivitySection &&
-          activities.length === 0 &&
+          {!activity &&
           (!data.listening_to_spotify || hideSpotify) &&
-          !showMusicActivity ? (
+          !showMusicActivity &&
+          !hideActivity ? (
             <div
               style={{
                 display: "flex",

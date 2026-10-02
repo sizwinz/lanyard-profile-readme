@@ -19,10 +19,14 @@ export type ProfileSettings = {
   borderRadius?: string;
   idleMessage?: string;
   optimized?: boolean;
+  width?: string;
+  height?: string;
 };
 
 export type SearchParams = {
   theme?: string;
+  width?: string;
+  height?: string;
   bg?: "dark" | "light" | string;
   clanBackgroundColor?: string;
   animated?: string;
