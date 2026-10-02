@@ -9,6 +9,8 @@
   --accent: #0969da;
   --accent-muted: #ddf4ff;
   --control-bg: #ffffff;
+  --font-open-sans: "Segoe UI", sans-serif;
+  --font-roboto-mono: Consolas, "Liberation Mono", monospace;
 }
 
 @theme inline {
