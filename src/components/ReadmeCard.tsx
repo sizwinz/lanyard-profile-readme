@@ -57,8 +57,9 @@ export function ReadmeCard({ data, settings, images }: ProfileCardProps) {
     {caption(x + 16, 198, label, 11, accent, true)}
     {body}
   </g>;
-  const progress = spotify ? Math.max(0, Math.min(1,
-    (Date.now() - spotify.timestamps.start) / Math.max(1, spotify.timestamps.end - spotify.timestamps.start))) : 0;
+  const progressOf = (timestamps: {start: number; end?: number} | undefined) => timestamps?.end ? Math.max(0, Math.min(1,
+    (Date.now() - timestamps.start) / Math.max(1, timestamps.end - timestamps.start))) : 0;
+  const musicTimestamps = spotify?.timestamps || music?.timestamps;
   const musicX = both && activities.length % 2 ? 384 : 32;
   return <svg xmlns="http://www.w3.org/2000/svg" width="744" height={height}
     viewBox={`0 0 744 ${height}`} data-layout="readme" role="img"
@@ -93,6 +94,10 @@ export function ReadmeCard({ data, settings, images }: ProfileCardProps) {
       {caption(x + 88, 230, shorten(activity.name, textLimit), 14, ink, true)}
       {caption(x + 88, 252, shorten(activity.details, textLimit), 12)}
       {caption(x + 88, 273, shorten(activity.state, textLimit), 12)}
+      {!settings.hideTimestamp && activity.timestamps?.end && <>
+        <rect x={x + 16} y="284" width={boxWidth - 32} height="3" fill={border} />
+        <rect x={x + 16} y="284" width={(boxWidth - 32) * progressOf(activity.timestamps)} height="3" fill={accent} />
+      </>}
       {!settings.hideTimestamp && activity.timestamps?.start && caption(x + 16, 301,
         `${Math.max(0, Math.floor((Date.now() - activity.timestamps.start) / 60000))} min · elapsed`, 10)}
     </>, Math.floor(i / 2))}</React.Fragment>;
@@ -102,8 +107,8 @@ export function ReadmeCard({ data, settings, images }: ProfileCardProps) {
       {caption(musicX + 88, 230, shorten(spotify?.song || music?.details, textLimit), 14, ink, true)}
       {caption(musicX + 88, 252, shorten(spotify?.artist || music?.state, textLimit), 12)}
       {caption(musicX + 88, 273, shorten(spotify?.album || music?.assets?.large_text, textLimit), 11)}
-      {spotify && <><rect x={musicX + 16} y="295" width={boxWidth - 32} height="3" fill={border} />
-        <rect x={musicX + 16} y="295" width={(boxWidth - 32) * progress} height="3" fill={accent} /></>}
+      {!settings.hideTimestamp && musicTimestamps?.end && <><rect x={musicX + 16} y="295" width={boxWidth - 32} height="3" fill={border} />
+        <rect x={musicX + 16} y="295" width={(boxWidth - 32) * progressOf(musicTimestamps)} height="3" fill={accent} /></>}
     </>, Math.floor(activities.length / 2))}
     {!hasContent && <g><rect x="32" y="172" width="680" height="80" rx="2" fill={inset} stroke={border} />
       {idleLines.slice(0, 3).map((line, i) => <React.Fragment key={i}>{caption(48, 196 + i * 19, shorten(line, 82), 13)}</React.Fragment>)}

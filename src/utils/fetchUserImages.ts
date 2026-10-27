@@ -82,8 +82,8 @@ export async function fetchUserImages(data: Data, settings: ProfileSettings) {
 
     if (act.assets?.large_image) {
       largeImage = await encodeBase64(
-        act.assets.large_image.startsWith("mp:external/")
-          ? `${act.assets.large_image.replace(/mp:external\/([^\/]*)\/(http[s])/g, "$2:/")}`
+        act.assets.large_image.startsWith("mp:")
+          ? `https://media.discordapp.net/${act.assets.large_image.slice(3)}`
           : `https://cdn.discordapp.com/app-assets/${act.application_id}/${act.assets.large_image}.webp`,
         ImageSize.ACTIVITY_LARGE,
         settings.theme
@@ -114,8 +114,8 @@ export async function fetchUserImages(data: Data, settings: ProfileSettings) {
 
     if (act.assets?.small_image)
       smallImage = await encodeBase64(
-        act.assets.small_image.startsWith("mp:external/")
-          ? `${act.assets.small_image.replace(/mp:external\/([^\/]*)\/(http[s])/g, "$2:/")}`
+        act.assets.small_image.startsWith("mp:")
+          ? `https://media.discordapp.net/${act.assets.small_image.slice(3)}`
           : `https://cdn.discordapp.com/app-assets/${act.application_id}/${act.assets.small_image}.webp`,
         ImageSize.ACTIVITY_SMALL,
         settings.theme
@@ -141,8 +141,8 @@ export async function fetchUserImages(data: Data, settings: ProfileSettings) {
     const musicActivity = data.activities.find((a) => a.type === 2 && !data.listening_to_spotify);
     if (musicActivity?.assets?.large_image)
       albumCover = await encodeBase64(
-        musicActivity.assets.large_image.startsWith("mp:external/")
-          ? `${musicActivity.assets.large_image.replace(/mp:external\/([^\/]*)\/(http[s])/g, "$2:/")}`
+        musicActivity.assets.large_image.startsWith("mp:")
+          ? `https://media.discordapp.net/${musicActivity.assets.large_image.slice(3)}`
           : `https://cdn.discordapp.com/app-assets/${musicActivity.application_id}/${musicActivity.assets.large_image}.webp`,
         ImageSize.ACTIVITY_LARGE
       );
