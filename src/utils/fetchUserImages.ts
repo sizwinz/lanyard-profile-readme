@@ -2,6 +2,7 @@ import { Activity, Data } from "./LanyardTypes";
 import { ProfileSettings } from "./parameters";
 import { ImageSize } from "./helpers";
 import { encodeBase64 } from "./toBase64";
+import { UnknownIconDark, UnknownIconLight } from "./badges";
 
 export async function fetchUserImages(data: Data, settings: ProfileSettings) {
   let avatar: string;
@@ -27,7 +28,8 @@ export async function fetchUserImages(data: Data, settings: ProfileSettings) {
 
   const activities = data.activities
     // Filter only type 0
-    .filter((activity) => activity.type === 0)
+      .filter((activity) => settings.layout === "readme"
+        ? [0, 1, 3, 5].includes(activity.type) : activity.type === 0)
     // Filter ignored app ID
     .filter(
       (activity) =>
@@ -86,12 +88,15 @@ export async function fetchUserImages(data: Data, settings: ProfileSettings) {
         ImageSize.ACTIVITY_LARGE,
         settings.theme
       );
-    } else if (act.application_id) {
+    }
+    if (act.application_id && (!act.assets?.large_image ||
+        (settings.layout === "readme" && (!largeImage || largeImage === UnknownIconDark || largeImage === UnknownIconLight)))) {
       try {
         const appInfo = await fetch(
           `https://discord.com/api/v9/applications/${act.application_id}/rpc`,
           {
-            next: { revalidate: 86400 } // Cache application details for 1 day
+              next: { revalidate: 86400 }, // Cache application details for 1 day
+              signal: AbortSignal.timeout(8000),
           }
         ).then(res => res.ok ? res.json() as Promise<{ icon?: string } | null> : null);
 

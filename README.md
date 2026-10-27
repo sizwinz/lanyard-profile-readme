@@ -43,6 +43,10 @@ accents, and compact activity/music panels. It supports `theme=dark` and
 visibility options. Spotify progress and elapsed time reflect the request time;
 GitHub image caching may delay updates. The default layout remains unchanged.
 With `hideProfile=true`, the original profile-free layout is used.
+Games/apps, streaming, watching, and competing can appear together in a compact
+grid. Decorations, public badges, server tags, and custom status respect their
+visibility settings. Failed activity artwork falls back to the Discord application
+icon, then a themed initials tile when no usable public artwork exists.
 
 There are a few options to customize this display using query parameters:
 
