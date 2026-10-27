@@ -35,6 +35,15 @@ The `<picture>` version follows GitHub's light or dark theme automatically. Use 
 
 ## Options
 
+### README card layout
+
+Add `layout=readme` for a native 744px-wide SVG with a chamfered frame, orange
+accents, and compact activity/music panels. It supports `theme=dark` and
+`theme=light`, display names, custom idle messages, ignored apps, and activity/music
+visibility options. Spotify progress and elapsed time reflect the request time;
+GitHub image caching may delay updates. The default layout remains unchanged.
+With `hideProfile=true`, the original profile-free layout is used.
+
 There are a few options to customize this display using query parameters:
 
 ### ___Theme___

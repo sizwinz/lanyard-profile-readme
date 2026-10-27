@@ -1,4 +1,5 @@
 export type ProfileSettings = {
+  layout?: "readme";
   theme?: string;
   bg?: string;
   clanBackgroundColor?: string;
@@ -24,6 +25,7 @@ export type ProfileSettings = {
 };
 
 export type SearchParams = {
+  layout?: string;
   theme?: string;
   width?: string;
   height?: string;

@@ -48,6 +48,7 @@ export function extractSearchParams(
     params.theme === "light" ? "#f6f8fa" : "#161b22";
 
   return {
+      layout: params.layout === "readme" ? "readme" as const : undefined,
     hideStatus,
     hideTimestamp,
     hideBadges,

@@ -3,8 +3,9 @@ import { Badges, UnknownIconDark, UnknownIconLight } from "@/utils/badges";
 import { elapsedTime, getFlags } from "@/utils/helpers";
 import { ProfileSettings } from "@/utils/parameters";
 import React, { DetailedHTMLProps, HTMLAttributes } from "react";
+import { ReadmeCard } from "./ReadmeCard";
 
-interface ProfileCardProps {
+export interface ProfileCardProps {
   settings: ProfileSettings;
   data: Data;
   images: {
@@ -22,6 +23,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   data,
   images,
 }: ProfileCardProps) => {
+  if (settings.layout === "readme" && !settings.hideProfile) return <ReadmeCard settings={settings} data={data} images={images} />;
   const {
     hideStatus,
     hideTimestamp,
